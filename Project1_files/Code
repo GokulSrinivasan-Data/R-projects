@@ -1,4 +1,4 @@
-#Basic:Cleaning up the data using deletion method and simple visualization 
+#Basic: Cleaning up the data using deletion method and simple visualization 
 
 #Setting the correct directory
 getwd()
