@@ -1,1 +1,86 @@
+#Part-1 No of movies released per year
+getwd()
+setwd('C://Users//gokul//Desktop//Data')
+df <- read.csv(list.files(path = "C:/Users/gokul/Desktop/Data")[3])
+
+#Grouping movies by release year
+df_year <- df %>%
+  group_by(release_year)%>%
+  add_tally()
+
+#Adding all the movies based on release year
+df_year <- df_year%>%
+  select(release_year,n,type) %>%
+  unique()
+df_2001_cur  <- df_year[order(-df_year$n),]
+
+#Subsetting release date from 2001 to 2019
+df_2001_cur <- df_2001_cur[1:38,]
+
+p<-ggplot(df_2001_cur, aes(x = reorder(release_year, n), y = n, fill = type))+
+  geom_bar(stat = "identity")+
+  coord_flip()+
+  theme_classic()+
+  xlab("Years")+
+  ylab("No of Content")+
+  ggtitle("Content per year")+
+  theme(
+   
+    #Axes titles:
+    axis.title.x = element_text(colour="Blue", size=12),
+    axis.title.y= element_text(colour="Blue", size=12),
+    
+    #Plot title:
+    plot.title = element_text(colour="Black",
+                              size=15,hjust = 0.5),
+    
+    #Legend title:
+    legend.title = element_text(size=12),
+    
+    #Legend text
+    legend.text = element_text(size=12)
+  )
+
+p$labels$fill = 'Type'
+
+#--------------------------------------------------------------------------------------------------------------
+#Part-2 No of movie released based on genre
+
+#Splitting the genres and adding them together  
+df_genre <- df %>% 
+  mutate(listed_in = strsplit(listed_in, ",")) %>% 
+  unnest(listed_in) %>%
+  group_by(listed_in)%>%
+  add_tally()%>%
+  select(listed_in,n,type) %>%
+  unique() 
+
+df_genre_top15 <- df_genre[order(-df_genre$n),]
+
+#Subsetting the top15 genres
+df_genre_top15 <- df_genre_top15[1:15,]
+
+p<-ggplot(df_genre_top15, aes(x=reorder(listed_in,n),y=n, fill=type)) +
+  geom_col() + coord_flip()+
+  xlab("Genre")+
+  ylab("No of Content")+
+  ggtitle("Content per year based on genre")+
+  theme(
+    
+    #Axes titles:
+    axis.title.x = element_text(colour="Blue", size=12),
+    axis.title.y= element_text(colour="Blue", size=12),
+    
+    #Plot title:
+    plot.title = element_text(colour="Black",
+                              size=15,hjust = 0.5),
+    
+    #Legend title:
+    legend.title = element_text(size=12),
+    
+    #Legend text
+    legend.text = element_text(size=12)
+  )
+
+p$labels$fill = 'Type'
 
