@@ -1,14 +1,14 @@
-#Part-1 No of movies released per year
+#Part-1 No of movies and TV shows released per year
 getwd()
 setwd('C://Users//gokul//Desktop//Data')
 df <- read.csv(list.files(path = "C:/Users/gokul/Desktop/Data")[3])
 
-#Grouping movies by release year
+#Grouping content by release year
 df_year <- df %>%
   group_by(release_year)%>%
   add_tally()
 
-#Adding all the movies based on release year
+#Adding all the content based on release year
 df_year <- df_year%>%
   select(release_year,n,type) %>%
   unique()
@@ -44,7 +44,7 @@ p<-ggplot(df_2001_cur, aes(x = reorder(release_year, n), y = n, fill = type))+
 p$labels$fill = 'Type'
 
 #--------------------------------------------------------------------------------------------------------------
-#Part-2 No of movie released based on genre
+#Part-2 No of movie and TV Shows released based on genre
 
 #Splitting the genres and adding them together  
 df_genre <- df %>% 
