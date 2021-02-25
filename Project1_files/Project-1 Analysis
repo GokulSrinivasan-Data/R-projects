@@ -1,0 +1,8 @@
+#Bank detail analysis:
+The goal of the plot is to determine the category of people who hold the most upgraded (silver, gold and platinum) loyalty cards.
+In the plot the 0 to 5 facets indicate the dependent count for the individuals. 
+We can observe the trend that as the dependent count increases the upgraded loyalty card type increases.
+On closer look we can determine that people who are single tend to hold the upgraded type of loyalty cards.
+we can also see that single individual with 3 dependent count tend to hold the most upgraded loyalty card followed by 4,5,1 dependent count.
+Single individual with 2 dependent counts and no dependent counts tend to have the same number of upgraded loyalty cards. 
+So, we conclude that people in the single category tend to upgrade their loyalty card more compared to married and divorced individual.
