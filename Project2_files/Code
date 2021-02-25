@@ -1,21 +1,21 @@
-#Part-1 No of movies and TV shows released per year
+#Part-1 No of movies released per year
 getwd()
 setwd('C://Users//gokul//Desktop//Data')
-df <- read.csv(list.files(path = "C:/Users/gokul/Desktop/Data")[3])
+df <- read.csv('netflix_titles.csv')
 
-#Grouping content by release year
+#Grouping movies by release year
 df_year <- df %>%
   group_by(release_year)%>%
   add_tally()
 
-#Adding all the content based on release year
-df_year <- df_year%>%
+#Adding all the movies based on release year
+df_year<- df_year%>%
   select(release_year,n,type) %>%
   unique()
-df_2001_cur  <- df_year[order(-df_year$n),]
+df_2001_cur<- df_year[order(-df_year$n),]
 
 #Subsetting release date from 2001 to 2019
-df_2001_cur <- df_2001_cur[1:38,]
+df_2001_cur<- df_2001_cur[1:38,]
 
 p<-ggplot(df_2001_cur, aes(x = reorder(release_year, n), y = n, fill = type))+
   geom_bar(stat = "identity")+
@@ -44,7 +44,7 @@ p<-ggplot(df_2001_cur, aes(x = reorder(release_year, n), y = n, fill = type))+
 p$labels$fill = 'Type'
 
 #--------------------------------------------------------------------------------------------------------------
-#Part-2 No of movie and TV Shows released based on genre
+#Part-2 No of movie released based on genre
 
 #Splitting the genres and adding them together  
 df_genre <- df %>% 
@@ -55,16 +55,14 @@ df_genre <- df %>%
   select(listed_in,n,type) %>%
   unique() 
 
-df_genre_top15 <- df_genre[order(-df_genre$n),]
+df_genre$listed_in<-trimws(df_genre$listed_in,which='left')
 
-#Subsetting the top15 genres
-df_genre_top15 <- df_genre_top15[1:15,]
 
-p<-ggplot(df_genre_top15, aes(x=reorder(listed_in,n),y=n, fill=type)) +
+p2<-ggplot(df_genre, aes(x=reorder(listed_in,n),y=n, fill=type)) +
   geom_col() + coord_flip()+
   xlab("Genre")+
   ylab("No of Content")+
-  ggtitle("Content per year based on genre")+
+  ggtitle("Famous Genres")+
   theme(
     
     #Axes titles:
@@ -82,5 +80,35 @@ p<-ggplot(df_genre_top15, aes(x=reorder(listed_in,n),y=n, fill=type)) +
     legend.text = element_text(size=12)
   )
 
-p$labels$fill = 'Type'
+p2$labels$fill = 'Type'
 
+#------------------------------------------------------------------------------------------------------------------
+#Part-3 Genre released per year 
+
+#Splitting the genre for every year  
+df_genyea <- df %>% 
+  mutate(listed_in = strsplit(listed_in, ",")) %>% 
+  unnest(listed_in) %>%
+  group_by(listed_in,release_year)%>%
+  add_tally()%>%
+  select(release_year,n,listed_in,type) %>%
+  unique() 
+
+df_genyea$listed_in <- trimws(df_genyea$listed_in, which = c("left"))
+
+df_genyea2000 <- df_genyea[order(-df_genyea$release_year),]
+
+#Subsetting the year from 2000 till 2019
+df_genyea2000 <- df_genyea2000[31:891,]
+
+#Visualization
+p3 <- ggplot(data = df_genyea2000, aes(x = n, y = listed_in, fill = type))+
+  geom_bar(stat='identity')+facet_grid(~release_year, scale='free_x')+
+  xlab("Genre")+
+  ylab("No of Content")+
+  ggtitle("No of content based on genre released every year")+
+  theme(axis.text.x=element_text(angle=90,hjust=1,vjust=.5,colour='gray50'),
+        plot.title = element_text(colour="Black",size=15,hjust = 0.5))
+
+p3$labels$fill = 'Type'
+#---------------------------------------------------------------------------------------------------------
