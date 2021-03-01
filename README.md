@@ -6,8 +6,8 @@ The goal of these projects is to be able to get better at data
 analysis and visualization. I start with simple projects and the 
 complexity increases.
 
-To get more insights on each individual projects please look at the project analysis folder
-to get an idea of what I am trying to do.
+To get more insights on each individual projects please look at the project analysis file
+for that particular project to get an idea of what I am trying to do.
 
 IDE used: R studio\
 Commonly used packages: Tidyverse,ggplot2\
